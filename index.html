@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Engineering 心智模型 | 血糖教練益力康陳董</title>
+<meta name="description" content="AI Engineering Mental Model — Build 建構 × Orchestrate 協調 → Goal & Outcome，兩大主幹、六大構件、五項成功指標的互動式心智地圖。">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=Montserrat:wght@600;700;800&display=swap');
+
+  :root {
+    --bg-a: #EAF4F6;
+    --bg-b: #DCEEF2;
+    --title-a: #2B6CB0;
+    --title-b: #38BDF8;
+    --accent: #06B6D4;
+    --gold: #C9A24B;
+    --text: #3A4A5C;
+    --text-soft: #5B6B7C;
+    --card-bg: rgba(255,255,255,.55);
+    --card-bg-strong: rgba(255,255,255,.72);
+    --card-border: rgba(255,255,255,.75);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Noto Sans TC', 'Montserrat', sans-serif;
+    background: linear-gradient(160deg, var(--bg-a) 0%, var(--bg-b) 100%);
+    color: var(--text);
+    min-height: 100vh;
+    position: relative;
+    overflow-x: hidden;
+  }
+
+  .bubble {
+    position: fixed;
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 0;
+  }
+  .b1 { width: 380px; height: 380px; top: -120px; right: -100px; background: rgba(56,189,248,0.14); }
+  .b2 { width: 240px; height: 240px; bottom: -60px; left: -80px; background: rgba(6,182,212,0.10); }
+  .b3 { width: 160px; height: 160px; top: 40%; right: 6%; background: rgba(43,108,176,0.08); }
+
+  main { position: relative; z-index: 1; max-width: 1040px; margin: 0 auto; padding: 56px 24px 100px; }
+
+  header { text-align: center; margin-bottom: 48px; }
+
+  .eyebrow {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 700;
+    font-size: 12px;
+    letter-spacing: 4px;
+    color: var(--accent);
+    text-transform: uppercase;
+  }
+
+  h1 {
+    font-weight: 900;
+    font-size: clamp(28px, 5vw, 42px);
+    background: linear-gradient(90deg, var(--title-a), var(--title-b));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    margin: 10px 0 12px;
+    line-height: 1.25;
+  }
+
+  .lead {
+    font-size: 15px;
+    color: var(--text-soft);
+    max-width: 620px;
+    margin: 0 auto;
+    line-height: 1.8;
+  }
+
+  /* 樹狀骨架 */
+  .tree { display: flex; flex-direction: column; align-items: center; }
+
+  .node-box {
+    background: var(--card-bg-strong);
+    border: 1px solid var(--card-border);
+    border-radius: 24px;
+    box-shadow: 0 8px 28px rgba(43,108,176,.10);
+    padding: 14px 28px;
+    font-weight: 700;
+    color: var(--title-a);
+    text-align: center;
+  }
+
+  .connector {
+    width: 2px;
+    height: 26px;
+    background: linear-gradient(180deg, rgba(56,189,248,.6), rgba(56,189,248,.1));
+  }
+
+  .branches {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    width: 100%;
+    margin-top: 4px;
+  }
+
+  @media (max-width: 760px) {
+    .branches { grid-template-columns: 1fr; }
+  }
+
+  .branch {
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 24px;
+    box-shadow: 0 8px 30px rgba(43,108,176,.10);
+    padding: 20px;
+  }
+
+  .branch-head {
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+    margin-bottom: 14px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid rgba(58,74,92,.12);
+  }
+
+  .branch-label {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 2.5px;
+    color: var(--accent);
+  }
+
+  .branch-title { font-weight: 700; font-size: 19px; color: var(--title-a); }
+
+  .components { display: flex; flex-direction: column; gap: 10px; }
+
+  .component {
+    background: rgba(255,255,255,.5);
+    border-radius: 14px;
+    border-left: 3px solid var(--title-b);
+    overflow: hidden;
+  }
+
+  .orchestrate .component { border-left-color: var(--gold); }
+
+  .comp-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    padding: 10px 14px;
+    cursor: pointer;
+    user-select: none;
+  }
+
+  .comp-name { font-size: 13.5px; font-weight: 700; color: var(--title-a); }
+  .orchestrate .comp-name { color: #8a6d2a; }
+
+  .comp-icon {
+    font-size: 12px;
+    color: var(--text-soft);
+    transition: transform .25s ease;
+    flex-shrink: 0;
+  }
+
+  .component.open .comp-icon { transform: rotate(45deg); }
+
+  .comp-body {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height .3s ease, padding .3s ease;
+    padding: 0 14px;
+  }
+
+  .component.open .comp-body {
+    max-height: 400px;
+    padding: 0 14px 14px;
+  }
+
+  .comp-desc {
+    font-size: 12.5px;
+    color: var(--text-soft);
+    line-height: 1.7;
+    margin-bottom: 8px;
+  }
+
+  .comp-items { list-style: none; }
+  .comp-items li {
+    font-size: 12px;
+    color: var(--text-soft);
+    padding: 4px 0 4px 14px;
+    position: relative;
+    line-height: 1.6;
+  }
+  .comp-items li::before {
+    content: "·";
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+    font-weight: 700;
+  }
+  .orchestrate .comp-items li::before { color: var(--gold); }
+
+  .comp-note {
+    font-size: 11.5px;
+    color: var(--text-soft);
+    font-style: italic;
+    background: rgba(6,182,212,.06);
+    border-radius: 8px;
+    padding: 8px 10px;
+    margin-top: 6px;
+  }
+  .orchestrate .comp-note { background: rgba(201,162,75,.08); }
+
+  .goal-box {
+    width: min(760px, 100%);
+    background: var(--card-bg-strong);
+    border: 1px solid var(--card-border);
+    border-radius: 24px;
+    box-shadow: 0 10px 34px rgba(6,182,212,.15);
+    padding: 22px 26px;
+    margin-top: 4px;
+    text-align: center;
+  }
+
+  .goal-title { font-weight: 700; font-size: 17px; color: var(--title-a); margin-bottom: 4px; }
+  .goal-sub { font-size: 12px; color: var(--text-soft); margin-bottom: 14px; }
+
+  .chips { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; }
+
+  .chip {
+    background: rgba(6,182,212,.10);
+    color: #0e7a90;
+    font-size: 12px;
+    font-weight: 700;
+    padding: 7px 16px;
+    border-radius: 999px;
+    border: 1px solid rgba(6,182,212,.25);
+    cursor: default;
+    transition: transform .15s ease, background .15s ease;
+  }
+  .chip:hover { transform: translateY(-2px); background: rgba(6,182,212,.18); }
+
+  .motto {
+    text-align: center;
+    margin-top: 36px;
+    font-size: 14.5px;
+    font-weight: 500;
+    color: var(--text);
+    line-height: 1.8;
+  }
+  .motto b { color: var(--title-a); }
+  .gold-dot { color: var(--gold); }
+
+  footer {
+    position: relative;
+    z-index: 1;
+    text-align: center;
+    padding: 24px;
+    font-size: 11px;
+    color: rgba(58,74,92,.5);
+    letter-spacing: 1px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    .comp-body, .comp-icon, .chip { transition: none; }
+  }
+</style>
+</head>
+<body>
+  <div class="bubble b1"></div>
+  <div class="bubble b2"></div>
+  <div class="bubble b3"></div>
+
+  <main>
+    <header>
+      <div class="eyebrow">AI Engineering · 心智模型</div>
+      <h1>Build 建構 × Orchestrate 協調<br>→ Goal &amp; Outcome</h1>
+      <p class="lead">不要死記框架，要理解架構背後的邏輯。心智模型一旦建立，任何新工具都只是「又一種實作方式」——點擊各構件卡片展開詳細說明。</p>
+    </header>
+
+    <div class="tree">
+      <div class="node-box">AI Engineering</div>
+      <div class="connector"></div>
+
+      <div class="branches">
+        <!-- BUILD -->
+        <section class="branch">
+          <div class="branch-head">
+            <span class="branch-label">BUILD</span>
+            <span class="branch-title">建構</span>
+          </div>
+          <div class="components">
+            <article class="component">
+              <div class="comp-head" onclick="toggle(this)">
+                <span class="comp-name">Prompts — 定義意圖</span>
+                <span class="comp-icon">＋</span>
+              </div>
+              <div class="comp-body">
+                <p class="comp-desc">Prompts 是整個心智模型的入口層，決定 Agent「知道自己要做什麼」。</p>
+                <ul class="comp-items">
+                  <li><b>System Prompt</b>：設定角色與邊界規則，整段對話最穩定的指令層</li>
+                  <li><b>Few-shot</b>：給 2–3 個「輸入→理想輸出」範例，模仿風格與格式</li>
+                  <li><b>Memory &amp; Context</b>：餵入歷史紀錄與情境資料，決定「當下記得什麼」</li>
+                </ul>
+                <div class="comp-note">口訣：System Prompt 決定角色、Few-shot 決定風格、Memory &amp; Context 決定情境。</div>
+              </div>
+            </article>
+
+            <article class="component">
+              <div class="comp-head" onclick="toggle(this)">
+                <span class="comp-name">Skills — 執行專業任務</span>
+                <span class="comp-icon">＋</span>
+              </div>
+              <div class="comp-body">
+                <p class="comp-desc">Skills 是動手做事的執行層，讓 Agent 具備專業能力而非只會聊天。</p>
+                <ul class="comp-items">
+                  <li><b>Code Interpreter</b>：寫程式、跑計算，把推理變成可執行運算</li>
+                  <li><b>Data Analyst</b>：清洗彙整表格資料，萃取可決策的洞察</li>
+                  <li><b>Web Researcher</b>：主動查詢外部即時資訊，補足知識缺口</li>
+                </ul>
+                <div class="comp-note">Skills 不是越多越好，關鍵是對應到具體交付物，判斷「這個任務該用哪個工具」。</div>
+              </div>
+            </article>
+
+            <article class="component">
+              <div class="comp-head" onclick="toggle(this)">
+                <span class="comp-name">Plugins / MCPs — 連接外部世界</span>
+                <span class="comp-icon">＋</span>
+              </div>
+              <div class="comp-body">
+                <p class="comp-desc">MCPs 打通 Agent 與外部真實世界的橋樑——沒有這一層，再會想也摸不到真實資料。</p>
+                <ul class="comp-items">
+                  <li><b>Files &amp; Docs</b>：讀寫本地或雲端文件</li>
+                  <li><b>Databases &amp; APIs</b>：連接結構化資料庫、第三方服務</li>
+                  <li><b>Tools &amp; Services</b>：呼叫外部工具完成特定任務</li>
+                </ul>
+                <div class="comp-note">風險最高的一層：連上資料庫或金流代表 Agent 能「動」到真實資料，務必搭配 Guardrails。</div>
+              </div>
+            </article>
+          </div>
+        </section>
+
+        <!-- ORCHESTRATE -->
+        <section class="branch orchestrate">
+          <div class="branch-head">
+            <span class="branch-label">ORCHESTRATE</span>
+            <span class="branch-title">協調</span>
+          </div>
+          <div class="components">
+            <article class="component">
+              <div class="comp-head" onclick="toggle(this)">
+                <span class="comp-name">Execution Patterns — 精煉決策</span>
+                <span class="comp-icon">＋</span>
+              </div>
+              <div class="comp-body">
+                <p class="comp-desc">決定 Agent 執行任務時走的路徑結構，難度隨結構複雜度遞增。</p>
+                <ul class="comp-items">
+                  <li><b>Loop</b>：反覆「嘗試→檢查→修正」，直到結果達標</li>
+                  <li><b>Workflow</b>：固定順序的步驟鏈，一步接一步線性執行</li>
+                  <li><b>Graph Engineering</b>：步驟間有分支、並行、依賴關係的網狀結構</li>
+                </ul>
+                <div class="comp-note">Loop 把一件事做對，Workflow 把一連串事做順，Graph 把多條互相牽動的線同時理順。</div>
+              </div>
+            </article>
+
+            <article class="component">
+              <div class="comp-head" onclick="toggle(this)">
+                <span class="comp-name">Agent Teams — 團隊協作</span>
+                <span class="comp-icon">＋</span>
+              </div>
+              <div class="comp-body">
+                <p class="comp-desc">不再單一 Agent 從頭做到尾，而是拆分角色分工，各司其職再彙整成果。</p>
+                <ul class="comp-items">
+                  <li><b>Planner</b>：拆解總目標成子任務，決定先後順序與分派</li>
+                  <li><b>Worker</b>：專注把單一子任務做到位</li>
+                  <li><b>Reviewer</b>：檢視產出是否合格，決定過關或打回重做</li>
+                </ul>
+                <div class="comp-note">分工有章法、品質有把關，才是真正的 Agent Teams，而非單純多開幾個 Agent。</div>
+              </div>
+            </article>
+
+            <article class="component">
+              <div class="comp-head" onclick="toggle(this)">
+                <span class="comp-name">Guardrails &amp; Memory — 安全把關</span>
+                <span class="comp-icon">＋</span>
+              </div>
+              <div class="comp-body">
+                <p class="comp-desc">協調層的最後一道防線，確保系統跑得快、跑得對，也不失控、不失憶。</p>
+                <ul class="comp-items">
+                  <li><b>Rules &amp; Policies</b>：設定不能碰的紅線與必須遵守的規範</li>
+                  <li><b>RAG &amp; Memory</b>：檢索外部知識庫佐證，避免憑印象瞎編</li>
+                  <li><b>State Management</b>：追蹤任務進度，避免多步驟任務跑到一半失憶</li>
+                </ul>
+                <div class="comp-note">事前防呆、事中查證、過程追蹤——三層遞進的把關邏輯。</div>
+              </div>
+            </article>
+          </div>
+        </section>
+      </div>
+
+      <div class="connector" style="height:22px;"></div>
+
+      <div class="goal-box">
+        <div class="goal-title">終極收斂點：Goal &amp; Outcome</div>
+        <div class="goal-sub">五項成功指標——Build 與 Orchestrate 的最終驗收標準</div>
+        <div class="chips">
+          <span class="chip">Accuracy 準確性</span>
+          <span class="chip">Reliability 可靠性</span>
+          <span class="chip">Speed 速度</span>
+          <span class="chip">Cost Efficiency 成本效益</span>
+          <span class="chip">User Impact 使用者影響力</span>
+        </div>
+      </div>
+    </div>
+
+    <p class="motto">
+      <span class="gold-dot">★</span> 不要死記框架，要理解架構背後的邏輯——<b>心智模型一旦建立，任何新工具都只是「又一種實作方式」</b> <span class="gold-dot">★</span>
+    </p>
+  </main>
+
+  <footer>CGM COACH · 血糖教練益力康陳董 &nbsp;|&nbsp; AI Engineering Mental Model</footer>
+
+  <script>
+    function toggle(headEl) {
+      var card = headEl.parentElement;
+      card.classList.toggle('open');
+    }
+  </script>
+</body>
+</html>
