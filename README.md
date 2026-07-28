@@ -2,7 +2,7 @@
 
 一頁式互動網頁，將 AI Engineering 的核心心智模型視覺化——**Build（建構）× Orchestrate（協調）→ Goal & Outcome（成功指標）**，用樹狀漏斗結構呈現兩大主幹、六大構件與五項成功指標，點擊卡片即可展開詳細說明。
 
-原始框架概念參考自 [@hackproduct9](https://www.tiktok.com/@hackproduct9)（TikTok: HackProduct）的 "AI Engineers Mental Model" 貼文，並依教學用途重新設計、擴充說明與繁體中文化。
+原始框架概念參考自HackProduct的 "AI Engineers Mental Model" 貼文，並依教學用途重新設計、擴充說明與繁體中文化。
 
 🔗 **Live Demo**：啟用 GitHub Pages 後可於 `https://<你的帳號>.github.io/<repo名稱>/` 瀏覽
 
