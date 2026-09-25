@@ -62,6 +62,8 @@ AI Engineering
 
 ## 授權與用途
 
+本專案採用 [CC BY-SA 4.0](LICENSE)（Attribution-ShareAlike 4.0 International）：可分享與改作，須標示來源，且衍生作品需以相同條款釋出。
+
 本頁面為教學輔助教材，供 AI 課程、企業內訓、產業輔導課綱等場合使用。歡迎依需求調整內容與樣式。
 
 ---
